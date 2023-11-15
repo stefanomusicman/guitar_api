@@ -11,29 +11,13 @@ def create():
     try:
         # GET DATA BEING PASSED INTO THE REQUEST BODY
         data = json.loads(request.data)
-        print(data)
+
+        keys = ['year', 'brand', 'model', 'num_frets', 'ss_frets', 'wood', 'locking_tuners']
 
         # validate that all necessary fields have been provided in the request body
-        if 'year' not in data:
-            return jsonify({'error': 'Year must be provided in the request.'}), 400
-        
-        if 'brand' not in data:
-            return jsonify({'error': 'Brand must be provided in the request.'}), 400
-        
-        if 'model' not in data:
-            return jsonify({'error': 'Model must be provided in the request.'}), 400
-        
-        if 'num_frets' not in data:
-            return jsonify({'error': 'Number of frets must be provided in the request.'}), 400
-        
-        if 'ss_frets' not in data:
-            return jsonify({'error': 'Stainless Steel frets must be provided in the request.'}), 400
-        
-        if 'wood' not in data:
-            return jsonify({'error': 'Wood must be provided in the request.'}), 400
-        
-        if 'locking_tuners' not in data:
-            return jsonify({'error': 'Locking Tuners must be provided in the request.'}), 400
+        for key in keys:
+            if key not in data:
+                return jsonify({'error': f'{key} must be provided in the request'}), 400
         
         created_guitar = create_guitar(data)
 
