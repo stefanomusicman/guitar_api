@@ -6,8 +6,6 @@ app = Flask(__name__)
 
 app.register_blueprint(guitar)
 
-print("DATABASE CONNECTION -> ", database.dbConnection)
-
 # WRAPPER FUNCTION DEFINING THE ENDPOINT
 @app.route("/")
 def index():
