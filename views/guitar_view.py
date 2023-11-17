@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import json
-from controllers.guitar_controller import create_guitar, fetch_guitars, search_by_brand
+from controllers.guitar_controller import create_guitar, fetch_guitars, search_by_brand, search_by_model
 
 guitar = Blueprint("guitar", __name__)
 
@@ -32,9 +32,6 @@ def create():
     except:
         return jsonify({'error': 'Something went wrong when creating a new guitar.'}), 500
 
-
-
-
 # GET ALL GUITARS
 @guitar.route("/v0/guitars/", methods=["GET"])
 def fetchAll():
@@ -44,7 +41,7 @@ def fetchAll():
     except Exception:
         return jsonify({'error': 'Error when fetching all guitars.'}), 500
     
-# GET ALL GUITARS BASED ON BRANDS
+# SEARCH BY BRAND
 @guitar.route("/v0/guitars/search-by-brand", methods=["GET"])
 def fetch_by_brand():
     try:
@@ -54,3 +51,14 @@ def fetch_by_brand():
 
     except Exception:
         return jsonify({'error': 'Error when searching by brand'}), 500
+    
+# SEARCH BY MODEL
+@guitar.route("/v0/guitars/search-by-model", methods=["GET"])
+def fetch_by_model():
+    try:
+        data = json.loads(request.data)
+
+        return jsonify({'guitars': search_by_model(data)})
+
+    except Exception:
+        return jsonify({'error': 'Error when searching by model'}), 500
