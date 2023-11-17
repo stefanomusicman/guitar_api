@@ -2,6 +2,7 @@ from models.guitar_model import Guitar
 from database.__init__ import database
 import app_config as config
 from flask import jsonify
+import re
 
 def create_guitar(guitar_information):
     try:
@@ -55,10 +56,11 @@ def search_by_brand(body_data):
         collection = database.dataBase[config.CONST_GUITAR_COLLECTION]
 
         search_term = body_data['brand']
+        regex = re.compile(search_term, re.IGNORECASE)
 
         guitars = []
 
-        for guitar in collection.find({'brand': str(search_term)}):
+        for guitar in collection.find({'brand': {'$regex': regex}}):
             current_guitar = {}
             current_guitar['uid'] = str(guitar['_id'])
             current_guitar['year'] = guitar['year']
@@ -80,10 +82,11 @@ def search_by_model(body_data):
         collection = database.dataBase[config.CONST_GUITAR_COLLECTION]
 
         search_term = body_data['model']
+        regex = f'.*{search_term}.*'
 
         guitars = []
 
-        for guitar in collection.find({'model': str(search_term)}):
+        for guitar in collection.find({'model': {'$regex' : regex, '$options': 'i'}}):
             current_guitar = {}
             current_guitar['uid'] = str(guitar['_id'])
             current_guitar['year'] = guitar['year']
