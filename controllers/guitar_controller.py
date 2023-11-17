@@ -27,10 +27,6 @@ def create_guitar(guitar_information):
     except Exception as err:
         print("Error when attempting to create a new guitar.", err)    
 
-
-
-
-
 def fetch_guitars():
     try:
         collection = database.dataBase[config.CONST_GUITAR_COLLECTION]
@@ -54,3 +50,27 @@ def fetch_guitars():
     except Exception as err:
         print("Error when fetching the guitars.", err)
 
+def search_by_brand(body_data):
+    try:
+        collection = database.dataBase[config.CONST_GUITAR_COLLECTION]
+
+        search_term = body_data['brand']
+
+        guitars = []
+
+        for guitar in collection.find({'brand': str(search_term)}):
+            current_guitar = {}
+            current_guitar['uid'] = str(guitar['_id'])
+            current_guitar['year'] = guitar['year']
+            current_guitar['brand'] = guitar['brand']
+            current_guitar['model'] = guitar['model']
+            current_guitar['num_frets'] = guitar['num_frets']
+            current_guitar['ss_frets'] = guitar['ss_frets']
+            current_guitar['wood'] = guitar['wood']
+            current_guitar['locking_tuners'] = guitar['locking_tuners']
+            guitars.append(current_guitar)
+
+        return guitars  
+
+    except Exception as err:
+        print("Error when attempting to search for guitars.", err)

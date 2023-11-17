@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import json
-from controllers.guitar_controller import create_guitar, fetch_guitars
+from controllers.guitar_controller import create_guitar, fetch_guitars, search_by_brand
 
 guitar = Blueprint("guitar", __name__)
 
@@ -43,3 +43,14 @@ def fetchAll():
 
     except Exception:
         return jsonify({'error': 'Error when fetching all guitars.'}), 500
+    
+# GET ALL GUITARS BASED ON BRANDS
+@guitar.route("/v0/guitars/search-by-brand", methods=["GET"])
+def fetch_by_brand():
+    try:
+        data = json.loads(request.data)
+
+        return jsonify({'guitars': search_by_brand(data)})
+
+    except Exception:
+        return jsonify({'error': 'Error when searching by brand'}), 500

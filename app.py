@@ -1,6 +1,5 @@
 from flask import Flask
 from views.guitar_view import guitar
-from database.__init__ import database
 
 app = Flask(__name__)
 
