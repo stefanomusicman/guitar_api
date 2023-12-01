@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import json
-from controllers.guitar_controller import create_guitar, fetch_guitars, search_by_brand, search_by_model
+from controllers.guitar_controller import create_guitar, fetch_guitars, search_by_brand, search_by_model, search_by_id
 
 guitar = Blueprint("guitar", __name__)
 
@@ -42,7 +42,7 @@ def fetchAll():
         return jsonify({'error': 'Error when fetching all guitars.'}), 500
     
 # SEARCH BY BRAND
-@guitar.route("/v0/guitars/search-by-brand", methods=["GET"])
+@guitar.route("/v0/guitars/search-by-brand/", methods=["GET"])
 def fetch_by_brand():
     try:
         data = json.loads(request.data)
@@ -53,7 +53,7 @@ def fetch_by_brand():
         return jsonify({'error': 'Error when searching by brand'}), 500
     
 # SEARCH BY MODEL
-@guitar.route("/v0/guitars/search-by-model", methods=["GET"])
+@guitar.route("/v0/guitars/search-by-model/", methods=["GET"])
 def fetch_by_model():
     try:
         data = json.loads(request.data)
@@ -62,3 +62,14 @@ def fetch_by_model():
 
     except Exception:
         return jsonify({'error': 'Error when searching by model'}), 500
+    
+# GET GUITAR BY ID
+@guitar.route("/v0/guitars/<guitarUid>/", methods=["GET"])
+def get_guitar_by_id(guitarUid):
+    try:
+        guitar = search_by_id(guitarUid)
+
+        return guitar
+    
+    except Exception:
+        return jsonify({'error': 'Something happened when getting the guitar'}), 500

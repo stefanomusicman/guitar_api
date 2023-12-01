@@ -1,6 +1,7 @@
 from models.guitar_model import Guitar
 from database.__init__ import database
 import app_config as config
+from bson.objectid import ObjectId
 from flask import jsonify
 import re
 
@@ -102,3 +103,20 @@ def search_by_model(body_data):
 
     except Exception as err:
         print("Error when attempting to search for guitars.", err)
+
+def search_by_id(guitarId):
+    try:
+        guitar_id = ObjectId(guitarId)
+
+        collection = database.dataBase[config.CONST_GUITAR_COLLECTION]
+
+        result = collection.find_one({'_id': guitar_id})
+
+        if result:
+            result['_id'] = str(result['_id'])
+            return jsonify(result)
+        else:
+            return jsonify({'error': 'Guitar not found'}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
