@@ -52,12 +52,11 @@ def fetch_guitars():
     except Exception as err:
         print("Error when fetching the guitars.", err)
 
-def search_by_brand(body_data):
+def search_by_brand(brand):
     try:
         collection = database.dataBase[config.CONST_GUITAR_COLLECTION]
 
-        search_term = body_data['brand']
-        regex = re.compile(search_term, re.IGNORECASE)
+        regex = re.compile(brand, re.IGNORECASE)
 
         guitars = []
 
