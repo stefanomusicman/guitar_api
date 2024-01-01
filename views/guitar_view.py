@@ -52,15 +52,14 @@ def fetch_by_brand(brand):
         return jsonify({'error': f'Error when searching by brand: {str(e)}'}), 500
     
 # SEARCH BY MODEL
-@guitar.route("/v0/guitars/search-by-model/", methods=["GET"])
-def fetch_by_model():
+@guitar.route("/v0/guitars/search-by-model/<model>", methods=["GET"])
+def fetch_by_model(model):
     try:
-        data = json.loads(request.data)
+        # No need to load request.data when using URL parameters
+        return jsonify({'guitars': search_by_model(model)})
 
-        return jsonify({'guitars': search_by_model(data)})
-
-    except Exception:
-        return jsonify({'error': 'Error when searching by model'}), 500
+    except Exception as e:
+        return jsonify({'error': f'Error when searching by model: {str(e)}'}), 500
     
 # GET GUITAR BY ID
 @guitar.route("/v0/guitars/<guitarUid>/", methods=["GET"])

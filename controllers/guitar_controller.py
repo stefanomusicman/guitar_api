@@ -77,16 +77,15 @@ def search_by_brand(brand):
     except Exception as err:
         print("Error when attempting to search for guitars.", err)
 
-def search_by_model(body_data):
+def search_by_model(model):
     try:
         collection = database.dataBase[config.CONST_GUITAR_COLLECTION]
 
-        search_term = body_data['model']
-        regex = f'.*{search_term}.*'
+        regex = f'.*{model}.*'
 
         guitars = []
 
-        for guitar in collection.find({'model': {'$regex' : regex, '$options': 'i'}}):
+        for guitar in collection.find({'model': {'$regex': regex, '$options': 'i'}}):
             current_guitar = {}
             current_guitar['uid'] = str(guitar['_id'])
             current_guitar['year'] = guitar['year']
@@ -98,7 +97,7 @@ def search_by_model(body_data):
             current_guitar['locking_tuners'] = guitar['locking_tuners']
             guitars.append(current_guitar)
 
-        return guitars  
+        return guitars
 
     except Exception as err:
         print("Error when attempting to search for guitars.", err)
