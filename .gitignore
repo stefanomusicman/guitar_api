@@ -1,4 +1,4 @@
-app_config.py
+secret.py
 __pycache__/
 controllers/__pycache__
 database/__pycache__
